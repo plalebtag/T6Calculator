@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Página</title>
+
+    <!-- Aqui você pode colar seu CSS -->
+    <style>
+        /* Seus estilos CSS aqui */
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+
+        .input-canal {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Calculadora de Preços T6</h1>
+        <div>
+            <label for="canal1">WhatsApp (Marketing):</label>
+            <input type="number" id="canal1" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal2">WhatsApp (Utility):</label>
+            <input type="number" id="canal2" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal3">WhatsApp (Authentication):</label>
+            <input type="number" id="canal3" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal4">WhatsApp (Service):</label>
+            <input type="number" id="canal4" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal5">SMS OTP:</label>
+            <input type="number" id="canal5" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal6">SMS Marketing:</label>
+            <input type="number" id="canal6" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal7">E-mail:</label>
+            <input type="number" id="canal7" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="canal8">Torpedo:</label>
+            <input type="number" id="canal8" class="input-canal" placeholder="Quantidade de mensagens">
+        </div>
+        <div>
+            <label for="numNumbers">Quantidade de números</label>
+            <input type="number" id="numNumbers" class="input-canal" placeholder="Quantidade de números">
+        </div>
+        <div>
+            <button onclick="calcular()">Calcular</button>
+        </div>
+        <div id="resultado"></div>
+    </div>
+
+
+
+    <script>
+        function calcular() {
+            const canal1 = parseFloat(document.getElementById('canal1').value) || 0;
+            const canal2 = parseFloat(document.getElementById('canal2').value) || 0;
+            const canal3 = parseFloat(document.getElementById('canal3').value) || 0;
+            const canal4 = parseFloat(document.getElementById('canal4').value) || 0;
+            const canal5 = parseFloat(document.getElementById('canal5').value) || 0;
+            const canal6 = parseFloat(document.getElementById('canal6').value) || 0;
+            const canal7 = parseFloat(document.getElementById('canal7').value) || 0;
+            const canal8 = parseFloat(document.getElementById('canal8').value) || 0;
+            const numNumbers = parseFloat(document.getElementById('numNumbers').value) || 0;
+
+            // Defina os custos de envio e de plataforma para cada canal
+            const custos = {
+                canal1: {
+                    envio: 0.5283,
+                    plataforma: 0.1
+                },
+                canal2: {
+                    envio: 0.3013,
+                    plataforma: 0.1
+                },
+                canal3: {
+                    envio: 0.2668,
+                    plataforma: 0.1
+                },
+                canal4: {
+                    envio: 0.2589,
+                    plataforma: 0.1
+                },
+                canal5: {
+                    envio: 0.065,
+                    plataforma: 0.005
+                },
+                canal6: {
+                    envio: 0.035,
+                    plataforma: 0.005
+                },
+                canal7: {
+                    envio: 0.0035,
+                    plataforma: 0.005
+                },
+                canal8: {
+                    envio: 0,
+                    plataforma: 0.4
+                }
+            };
+
+            const custoNumero = 500; // Custo por número
+
+            const totalEnvio = (canal1 * custos.canal1.envio) + (canal2 * custos.canal2.envio) + (canal3 * custos.canal3.envio) + (canal4 * custos.canal4.envio) + (canal5 * custos.canal5.envio) + (canal6 * custos.canal6.envio) + (canal7 * custos.canal7.envio) + (canal8 * custos.canal8.envio);
+            const totalPlataforma = (canal1 * custos.canal1.plataforma) + (canal2 * custos.canal2.plataforma) + (canal3 * custos.canal3.plataforma) + (canal4 * custos.canal4.plataforma) + (canal5 * custos.canal5.plataforma) + (canal6 * custos.canal6.plataforma) + (canal7 * custos.canal7.plataforma) + (canal8 * custos.canal8.plataforma);
+
+            let precoTotal = totalEnvio + totalPlataforma;
+
+            // Se a somatória dos custos plataforma for inferior a 5.000,00 reais, acrescentar a diferença até somar os 5.000 reais
+            if (totalPlataforma < 5000) {
+                const diferenca = 5000 - totalPlataforma;
+                precoTotal += diferenca;
+            }
+
+            const custoTotalNumero = numNumbers * custoNumero;
+            precoTotal += custoTotalNumero;
+
+            document.getElementById('resultado').innerHTML = `
+    <p>Custo de Envios: R$ ${totalEnvio.toFixed(2)}</p>
+    <p>Custo da Plataforma: R$ ${totalPlataforma.toFixed(2)}</p>
+    <p>Custo de Números: R$ ${custoTotalNumero.toFixed(2)}</p>
+    <p>Preço Total: R$ ${precoTotal.toFixed(2)}</p>
+  `;
+        }
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
